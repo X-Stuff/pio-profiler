@@ -220,6 +220,11 @@ template<bool Precise> struct ScopedCounter
 
     ~ScopedCounter()
     {
+#ifndef PROFILER_LOG_FUNCTION
+    #if defined(ENABLE_PROFILE) && ENABLE_PROFILE
+        #warning "PROFILER_LOG_FUNCTION is not defined, ScopedCounter will not print anything. Log function can be any printf-like function. e.g.: `my_print(const char*, ...)`. "
+    #endif
+#else
         constexpr static auto Resolution = Precise ? "us" : "ms";
 
         auto delta = Now() - StartTimestamp;
@@ -229,18 +234,19 @@ template<bool Precise> struct ScopedCounter
             {
                 if (File != nullptr)
                 {
-                    PrintResults("[%s] Elapsed time: %d %s" NEW_LINE "[%s: line: %d]", Name, delta, Resolution, File, Line);
+                    PROFILER_LOG_FUNCTION("[%s] Elapsed time: %d %s" NEW_LINE "[%s: line: %d]", Name, delta, Resolution, File, Line);
                 }
                 else
                 {
-                    PrintResults("[%s] Elapsed time: %d %s", Name, delta, Resolution);
+                    PROFILER_LOG_FUNCTION("[%s] Elapsed time: %d %s", Name, delta, Resolution);
                 }
             }
             else
             {
-                PrintResults("[UNKNOWN] Elapsed time: %d %s", delta, Resolution);
+                PROFILER_LOG_FUNCTION("[UNKNOWN] Elapsed time: %d %s", delta, Resolution);
             }
         }
+#endif
     }
 
 private:
@@ -254,17 +260,6 @@ private:
         {
             return millis();
         }
-    }
-
-    template<typename... TArgs> inline void PrintResults(TArgs... args)
-    {
-#ifndef PROFILER_LOG_FUNCTION
-    #if defined(ENABLE_PROFILE) || ENABLE_PROFILE
-        #warning "PROFILER_LOG_FUNCTION is not defined, ScopedCounter will not print anything. Log function can be any printf-like function. e.g.: `my_print(const char*, ...)`. "
-    #endif
-#else
-        PROFILER_LOG_FUNCTION(std::forward<TArgs>(args)...);
-#endif
     }
 
 private:
@@ -284,7 +279,7 @@ private:
     int Line;
 };
 
-#if defined(ENABLE_PROFILE) || ENABLE_PROFILE
+#if defined(ENABLE_PROFILE) && ENABLE_PROFILE
     #define PROFILER_CONCAT(x, y) x ## y
     #define PROFILER_TOKENIZE(x, y) PROFILER_CONCAT(x, y)
 

@@ -1,6 +1,6 @@
 {
     "name": "SimpleProfiler",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A simple profile library, allows to measure time for a single, or multiple, or consecutive calls of arbitrary code block. It uses `millis()` and `micros()` functions to measure time. Provide API to measure any modifiable value to collect statistics (e.g. bytes, ticks, etc.).",
     "keywords": "profiler, profiling, c++, performance, tool, statistics, time, measure, benchmark, debug",
     "repository":
