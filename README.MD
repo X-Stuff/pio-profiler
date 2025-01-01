@@ -11,7 +11,7 @@ lib_deps =
     x-stuff/SimpleProfiler@1.0.1
 
 build_flags =
-    -DENABLE_PROFILING=1
+    -DENABLE_PROFILE=1
     '-DPROFILER_LOG_FUNCTION=my_log'
 ```
 
