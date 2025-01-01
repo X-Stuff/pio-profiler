@@ -1,5 +1,7 @@
 # Simple Profiling Library
 
+[![PlatformIO Registry](https://badges.registry.platformio.org/packages/x-stuff/library/SimpleProfiler.svg)](https://registry.platformio.org/libraries/x-stuff/SimpleProfiler)
+
 Allows quickly put macros in critical places in code to get log prints if execution time is over the theshold.
 Allows collect statistics of time measurements.
 
@@ -8,7 +10,7 @@ Allows collect statistics of time measurements.
 **platformio.ini**
 ```
 lib_deps =
-    x-stuff/SimpleProfiler@1.0.1
+    x-stuff/SimpleProfiler@^1.0.2
 
 build_flags =
     -DENABLE_PROFILE=1
