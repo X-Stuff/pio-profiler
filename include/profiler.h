@@ -234,16 +234,16 @@ template<bool Precise> struct ScopedCounter
             {
                 if (File != nullptr)
                 {
-                    PROFILER_LOG_FUNCTION("[%s] Elapsed time: %d %s" NEW_LINE "[%s: line: %d]", Name, delta, Resolution, File, Line);
+                    PROFILER_LOG_FUNCTION("[%s] Elapsed time: %d %s (%s:%d)" NEW_LINE, Name, delta, Resolution, File, Line);
                 }
                 else
                 {
-                    PROFILER_LOG_FUNCTION("[%s] Elapsed time: %d %s", Name, delta, Resolution);
+                    PROFILER_LOG_FUNCTION("[%s] Elapsed time: %d %s" NEW_LINE, Name, delta, Resolution);
                 }
             }
             else
             {
-                PROFILER_LOG_FUNCTION("[UNKNOWN] Elapsed time: %d %s", delta, Resolution);
+                PROFILER_LOG_FUNCTION("[UNKNOWN] Elapsed time: %d %s" NEW_LINE, delta, Resolution);
             }
         }
 #endif
@@ -336,6 +336,9 @@ private:
     /** Internal helper macro */
     #define DECLARE_SCOPE_COUNTER(name, ...) ScopedCounter<false> PROFILER_TOKENIZE(__counter_, __LINE__)(name, __FILE__, __LINE__,  ## __VA_ARGS__)
 
+    /** Internal helper macro */
+    #define DECLARE_SCOPE_COUNTER_US(name, ...) ScopedCounter<true> PROFILER_TOKENIZE(__counter_, __LINE__)(name, __FILE__, __LINE__,  ## __VA_ARGS__)
+
     /**
      *  Usage:
      *   {
@@ -345,6 +348,15 @@ private:
      */
     #define AUTO_SCOPED_COUNTER DECLARE_SCOPE_COUNTER(__func__);
 
+    /**
+     *  Usage:
+     *   {
+     *    AUTO_SCOPED_COUNTER_US;
+     *    // Code to measure (will be printed always)
+     *   }
+     */
+    #define AUTO_SCOPED_COUNTER_US DECLARE_SCOPE_COUNTER_US(__func__);
+
     /*
      * Usage:
      *  {
@@ -353,10 +365,22 @@ private:
      *  }
      */
     #define NAME_SCOPED_COUNTER(name, ...) DECLARE_SCOPE_COUNTER(name, ## __VA_ARGS__);
+
+    /*
+     * Usage:
+     *  {
+     *    NAME_SCOPED_COUNTER_US("Name", Threshold);
+     *    // Code to measure
+     *  }
+     */
+    #define NAME_SCOPED_COUNTER_US(name, ...) DECLARE_SCOPE_COUNTER_US(name, ## __VA_ARGS__);
 #else
     #define DECLARE_SCOPE_COUNTER(...)
+    #define DECLARE_SCOPE_COUNTER_US(...)
     #define AUTO_SCOPED_COUNTER
+    #define AUTO_SCOPED_COUNTER_US
     #define NAME_SCOPED_COUNTER(...)
+    #define NAME_SCOPED_COUNTER_US(...)
 
     #define MEASURE_TIME_MS(...)
     #define MEASURE_TIME_US(...)

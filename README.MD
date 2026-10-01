@@ -10,7 +10,7 @@ Allows collect statistics of time measurements.
 **platformio.ini**
 ```
 lib_deps =
-    x-stuff/SimpleProfiler@^1.0.2
+    x-stuff/SimpleProfiler@^1.1.0
 
 build_flags =
     -DENABLE_PROFILE=1

@@ -20,8 +20,7 @@ void setup()
     //  - to show how long it took to execute the block of code - `AUTO_SCOPED_COUNTER` (if executtion time is greater than 1 ms - minimal detection threshold)
 
     // This will print:
-    //  [setup] Elapsed time: 21 ms
-    //  [simple\simple.ino: line: 21]
+    //  [setup] Elapsed time: 21 ms (simple\simple.ino:24)
     AUTO_SCOPED_COUNTER;
 
     {
@@ -32,8 +31,7 @@ void setup()
 
     {
         // This will print:
-        //  [Test-2] Elapsed time: 20 ms
-        //  [simple\simple.ino: line: 33]
+        //  [Test-2] Elapsed time: 20 ms (simple\simple.ino:35)
         NAME_SCOPED_COUNTER("Test-2", 10);
         delay(20);
     }
